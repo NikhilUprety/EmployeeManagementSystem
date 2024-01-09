@@ -25,8 +25,12 @@
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Phone no</th>
-                    </tr>
+                        <th scope="col">Phone no</th> 
+                        <th scope="col">Adress</th> 
+                        <th scope="col">Position</th>
+                        <th scope="col">Action</th>
+                       
+                    </tr>   
                 </thead>
                 <tbody>
                         @foreach( var data in Model)
@@ -37,6 +41,20 @@
                             <td>@data.Name</td>
                             <td>@data.Email</td>
                             <td>@data.PhoneNumber</td>
+                            <td>@data.Address</td>
+                            <td>@data.Position</td>
+                            <td class="d-flex flex-row align-items-center justify-content-between">
+                                <a  class="bg-danger p-1 text-light rounded ">
+                                    
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                </a>
+                                <a class="bg-success p-1 text-light rounded">
+                                        <ion-icon name="create-outline"></ion-icon>
+                                </a>
+                                    <a class="bg-primary p-1 text-light rounded">
+                                        <ion-icon name="person-circle-outline"></ion-icon>
+                                </a>
+                            </td>
                         </tr>
                         counter++;
                         }
