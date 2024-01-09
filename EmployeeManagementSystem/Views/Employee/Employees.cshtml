@@ -1,0 +1,57 @@
+﻿@model List<EmployeeManagementSystem.Models.Domain.EmployeeModel>
+@{
+    int counter = 1;
+}
+<partial name="~/Views/Shared/_Notification.cshtml" />
+<div class="container">
+    <div class="row">
+            <div class="col-md-10 mb-3">
+            <div class="d-flex justify-content-between p-2 " style="background:#0075A2;">
+                        <span class="fs-5 mx-2 fw-bold text-white">Employees Dashboard</span>
+                     <a asp-controller="Employee" asp-area="" asp-action="Addemployee">
+                <ion-icon name="person-add-outline" class="fs-5 mx-3 text-white"></ion-icon>
+
+                </a>
+            </div>
+            </div>
+
+            <div class="col-md-10">
+            @if(Model != null)
+            {
+                
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone no</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        @foreach( var data in Model)
+                        {
+                            
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@data.Name</td>
+                            <td>@data.Email</td>
+                            <td>@data.PhoneNumber</td>
+                        </tr>
+                        counter++;
+                        }
+                   
+                </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">
+                    No data found.
+                </div>
+            }
+            </div>
+           
+       
+    </div>
+</div>
