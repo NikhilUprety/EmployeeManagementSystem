@@ -1,0 +1,37 @@
+﻿@model EmployeeManagementSystem.Models.UpdateViewModel
+<partial name="~/Views/Shared/_Notification.cshtml" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+
+            <form method="post" action="Addemployee">
+                <div class="mb-3">
+                    <label class="form-label">ID</label>
+                    <input type="text" asp-for="Id" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" asp-for="Name" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" asp-for="Email" class="form-control" readonly/>
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" asp-for="PhoneNumber" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <input type="text" asp-for="Address" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Position</label>
+                    <input type="text" asp-for="Position" class="form-control"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

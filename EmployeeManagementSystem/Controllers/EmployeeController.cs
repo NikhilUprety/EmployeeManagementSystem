@@ -50,6 +50,11 @@ namespace EmployeeManagementSystem.Controllers
                 TempData["SuccessMessage"] = "Data Entered Successfully.";
                 return RedirectToAction("Employees");
             }
+
+        }
+        public IActionResult Update(int id)
+        {
+            return View();
         }
 
 
