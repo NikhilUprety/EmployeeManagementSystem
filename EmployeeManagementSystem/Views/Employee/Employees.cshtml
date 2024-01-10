@@ -44,7 +44,7 @@
                             <td>@data.Address</td>
                             <td>@data.Position</td>
                             <td class="d-flex flex-row align-items-center justify-content-between">
-                                <a href="#" class="bg-danger p-1 text-light rounded ">
+                                <a href="#" onclick="submitDelete(@data.Id);" class="bg-danger p-1 text-light rounded ">
                                     
                                         <ion-icon name="trash-outline"></ion-icon>
                                 </a>
@@ -73,3 +73,12 @@
        
     </div>
 </div>
+
+ <script>
+     function submitDelete(id) {
+         var confirmDelete = confirm("Are you sure?")
+         if (confirmDelete) {
+             window.location.href = "/Employee/Delete?id="+id
+         }
+     }
+</script>
