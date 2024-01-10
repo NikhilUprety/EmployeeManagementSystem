@@ -99,7 +99,19 @@ namespace EmployeeManagementSystem.Controllers
             return RedirectToAction("Update");
 
         }
-
+        public IActionResult Delete(int id)
+        {
+            var employee = _employeeDbContext.EmployeeTable.Find(id);
+            if (employee != null)
+            {
+                _employeeDbContext.EmployeeTable.Remove(employee);
+                _employeeDbContext.SaveChanges();
+                TempData["SuccessMessage"] = "Deleted Successfully.";
+                return RedirectToAction("Employees");
+            }
+            TempData["ErrorMessage"] = "Not Deleted Successfully.";
+            return RedirectToAction("Employees");
+        }
 
     }
 }
