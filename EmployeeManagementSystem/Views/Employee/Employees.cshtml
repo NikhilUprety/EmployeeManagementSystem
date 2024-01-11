@@ -5,15 +5,29 @@
 <partial name="~/Views/Shared/_Notification.cshtml" />
 <div class="container">
     <div class="row">
+        <div class="d-flex flex-column">
+
             <div class="col-md-10 mb-3">
             <div class="d-flex justify-content-between p-2 " style="background:#0075A2;">
                         <span class="fs-5 mx-2 fw-bold text-white">Employees Dashboard</span>
                      <a asp-controller="Employee" asp-area="" asp-action="Addemployee">
                 <ion-icon name="person-add-outline" class="fs-5 mx-3 text-white"></ion-icon>
-
+                 
                 </a>
             </div>
             </div>
+            <div class="col-md-2">
+                
+            <div class="input-group mb-3">
+                <form class="d-flex flex-row" method="get"id="searchform">
+
+                <input name="searchquery" type="text" class="form-control" id="searchquery" placeholder="Name" aria-label="">
+                    <span onclick="submitform();" class="input-group-text bg-opacity-10"><ion-icon name="search-outline"></ion-icon></span>
+                </form>
+                    
+            </div>
+            </div>
+        </div>
 
             <div class="col-md-10">
             @if(Model != null)
@@ -28,6 +42,7 @@
                         <th scope="col">Phone no</th> 
                         <th scope="col">Adress</th> 
                         <th scope="col">Position</th>
+                        <th scope="col">Department</th>
                         <th scope="col">Action</th>
                        
                     </tr>   
@@ -43,6 +58,8 @@
                             <td>@data.PhoneNumber</td>
                             <td>@data.Address</td>
                             <td>@data.Position</td>
+                            <td>Department</td>
+                            
                             <td class="d-flex flex-row align-items-center justify-content-between">
                                 <a href="#" onclick="submitDelete(@data.Id);" class="bg-danger p-1 text-light rounded ">
                                     
@@ -79,6 +96,16 @@
          var confirmDelete = confirm("Are you sure?")
          if (confirmDelete) {
              window.location.href = "/Employee/Delete?id="+id
+         }
+     }
+     function submitform() {
+         var searchquery = document.getElementById("searchquery").value;
+         var form = document.getElementById("searchform");
+         if (searchquery === '') {
+             event.preventDefault();
+         }
+         else {
+             form.submit();
          }
      }
 </script>

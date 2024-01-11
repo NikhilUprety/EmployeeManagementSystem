@@ -20,10 +20,21 @@ namespace EmployeeManagementSystem.Controllers
             return View();
         }
 
-        public IActionResult Employees()
+        public IActionResult Employees(string searchQuery="")
         {
-            var employees = _employeeDbContext.EmployeeTable?.ToList();
-            return View(employees);
+            var employee = from emp in _employeeDbContext.EmployeeTable
+                             select emp;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                employee = _employeeDbContext.EmployeeTable?.Where(x =>
+                               x.Name.Contains(searchQuery) ||
+                               x.Email.Contains(searchQuery)||
+                               x.Address.Contains(searchQuery)
+                               
+
+                );
+            }
+            return View(employee?.ToList());
         }
         public IActionResult Addemployee()
         {
