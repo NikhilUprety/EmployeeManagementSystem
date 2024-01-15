@@ -40,5 +40,6 @@ namespace EmployeeManagementSystem.Repository.Implementation
         {
             throw new NotImplementedException();
         }
+        //implementation of irepository
     }
 }
