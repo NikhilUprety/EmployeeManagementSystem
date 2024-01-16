@@ -8,4 +8,4 @@ namespace EmployeeManagementSystem.Repository.IRepository
         void save();
 
     }
-}
+} 
