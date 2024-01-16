@@ -1,6 +1,8 @@
 ﻿using EmployeeManagementSystem.DataContext;
 using EmployeeManagementSystem.Models;
 using EmployeeManagementSystem.Models.Domain;
+using EmployeeManagementSystem.Repository.Implementation;
+using EmployeeManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +12,8 @@ namespace EmployeeManagementSystem.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly EmployeeDbContext _employeeDbContext;
-        public EmployeeController(EmployeeDbContext employeeDbContext)
+        private readonly IEmployeeRepository _employeeDbContext;
+        public EmployeeController(IEmployeeRepository employeeDbContext)
         {
             _employeeDbContext = employeeDbContext;
         }
