@@ -12,10 +12,10 @@ namespace EmployeeManagementSystem.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeDbContext;
+        private readonly IEmployeeRepository _employeerepo;
         public EmployeeController(IEmployeeRepository employeeDbContext)
         {
-            _employeeDbContext = employeeDbContext;
+            _employeerepo = employeeDbContext;
         }
         public IActionResult Index()
         {
@@ -24,11 +24,11 @@ namespace EmployeeManagementSystem.Controllers
 
         public IActionResult Employees(string searchQuery="")
         {
-            var employee = from emp in _employeeDbContext.EmployeeTable
+            var employee = from emp in _employeerepo.EmployeeTable
                              select emp;
             if (!string.IsNullOrEmpty(searchQuery))
             {
-                employee = _employeeDbContext.EmployeeTable?.Where(x =>
+                employee = _employeerepo.EmployeeTable?.Where(x =>
                                x.Name.Contains(searchQuery) ||
                                x.Email.Contains(searchQuery)||
                                x.Address.Contains(searchQuery)
