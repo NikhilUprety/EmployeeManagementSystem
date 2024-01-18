@@ -13,6 +13,8 @@ namespace EmployeeManagementSystem.Repository.Implementation
             _employeeDbContext = employeeDbContext;
         }
 
+        public object Employee { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public object Employetable { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void save()
         {
