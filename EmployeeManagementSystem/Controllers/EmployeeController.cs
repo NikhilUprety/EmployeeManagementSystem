@@ -32,10 +32,12 @@ namespace EmployeeManagementSystem.Controllers
 
             if (string.IsNullOrEmpty(searchQuery))
             {
-                return View();
+                var result=_employeerepo.GetAll().ToList();
+                return View(result);
+
             }
             else
-            {
+            {   
                 
                 var result = _employeerepo.GetAll();
                 var filteredResult = result.Where(x =>x.Name.Contains(searchQuery)

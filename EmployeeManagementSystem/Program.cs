@@ -1,9 +1,13 @@
 using EmployeeManagementSystem.DataContext;
+using EmployeeManagementSystem.Repository.Implementation;
+using EmployeeManagementSystem.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+builder.Services.AddTransient(typeof(IRepository<>),typeof(Repository<>));
+builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
