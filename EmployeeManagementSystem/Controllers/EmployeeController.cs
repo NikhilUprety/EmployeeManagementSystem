@@ -1,4 +1,5 @@
-﻿using EmployeeManagementSystem.DataContext;
+﻿using Azure.Search.Documents.Models;
+using EmployeeManagementSystem.DataContext;
 using EmployeeManagementSystem.Models;
 using EmployeeManagementSystem.Models.Domain;
 using EmployeeManagementSystem.Repository.Implementation;
@@ -13,10 +14,10 @@ namespace EmployeeManagementSystem.Controllers
     public class EmployeeController : Controller
     {
         //Dependency injection
-        private readonly IEmployeeRepository _employeeDbContext;
-        public EmployeeController(IEmployeeRepository employeeDbContext)
+        private readonly IEmployeeRepository _employeerepo;
+        public EmployeeController(IEmployeeRepository employeerepo)
         {
-            _employeeDbContext = employeeDbContext;
+            _employeerepo = employeerepo;
         }
         public IActionResult Index()
         {
@@ -25,19 +26,23 @@ namespace EmployeeManagementSystem.Controllers
 
         public IActionResult Employees(string searchQuery="")
         {
-            var employee = from emp in _employeeDbContext.Get(x=> Get(x => x.Name)) where emp.Name == searchQuery
-                             select emp;
-            if (!string.IsNullOrEmpty(searchQuery))
-            {
-                employee = _employeeDbContext.EmployeeTable?.Where(x =>
-                               x.Name.Contains(searchQuery) ||
-                               x.Email.Contains(searchQuery)||
-                               x.Address.Contains(searchQuery)
-                               
+            //if search query is null or empty
+            //render view only
+            //otherwise --> select data based on search query and pass to the view to render the result on table.
 
-                );
+            if (string.IsNullOrEmpty(searchQuery))
+            {
+                return View();
             }
-            return View(employee?.ToList());
+            else
+            {
+                
+                var result = _employeerepo.GetAll();
+                var filteredResult = result.Where(x =>x.Name.Contains(searchQuery)
+                                        || x.Email.Contains(searchQuery));
+
+                return View(filteredResult);
+            }
         }
         public IActionResult Addemployee()
         {
@@ -48,7 +53,7 @@ namespace EmployeeManagementSystem.Controllers
         [HttpPost]
         public IActionResult Addemployee(EmployeeViewModel employeeVm)
         {
-            if (_employeeDbContext.EmployeeTable.Any(x => x.Email == employeeVm.Email || x.PhoneNumber == employeeVm.PhoneNumber))
+            if (_employeerepo.Get(x => x.Email == employeeVm.Email || x.PhoneNumber == employeeVm.PhoneNumber)!=null)
             {
                 TempData["ErrorMessage"] = "Email or Phone Already Exists.";
                 return RedirectToAction("Addemployee");
@@ -63,8 +68,8 @@ namespace EmployeeManagementSystem.Controllers
                     Address = employeeVm.Address,
                     Position = employeeVm.Position
                 };
-                _employeeDbContext.EmployeeTable?.Add(employees);
-                _employeeDbContext.SaveChanges();
+                _employeerepo.Add(employees);
+                _employeerepo.save();
                 TempData["SuccessMessage"] = "Data Entered Successfully.";
                 return RedirectToAction("Employees");
             }
@@ -72,7 +77,7 @@ namespace EmployeeManagementSystem.Controllers
         }
         public IActionResult Update(int id)
         {
-            var employee = _employeeDbContext.EmployeeTable.FirstOrDefault(x => x.Id == id);
+            var employee = _employeerepo.Get(x => x.Id == id);
             if (employee != null)
             {
                 var model = new UpdateViewModel()
@@ -93,7 +98,7 @@ namespace EmployeeManagementSystem.Controllers
         [HttpPost]
         public IActionResult Update(UpdateViewModel Updatevm)
         {
-            var employee = _employeeDbContext.EmployeeTable.Find(Updatevm.Id);
+            var employee = _employeerepo.Get(x=>x.Id==Updatevm.Id);
             if (employee != null)
             {
 
@@ -104,7 +109,7 @@ namespace EmployeeManagementSystem.Controllers
                 employee.PhoneNumber = Updatevm.PhoneNumber;
                 employee.Address = Updatevm.Address;
                 employee.Position = Updatevm.Position;
-                _employeeDbContext.SaveChanges();
+                _employeerepo.save();
                 TempData["SuccessMessage"] = "Data saved ";
                 return RedirectToAction("Employees");
             }
@@ -115,11 +120,11 @@ namespace EmployeeManagementSystem.Controllers
         }
         public IActionResult Delete(int id)
         {
-            var employee = _employeeDbContext.EmployeeTable.Find(id);
+            var employee = _employeerepo.Get(x=>x.Id==id);
             if (employee != null)
             {
-                _employeeDbContext.EmployeeTable.Remove(employee);
-                _employeeDbContext.SaveChanges();
+                _employeerepo.Remove(employee);
+                _employeerepo.save();
                 TempData["SuccessMessage"] = "Deleted Successfully.";   
                 return RedirectToAction("Employees");
             }
