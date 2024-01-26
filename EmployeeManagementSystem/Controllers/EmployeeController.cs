@@ -120,7 +120,7 @@ namespace EmployeeManagementSystem.Controllers
             {
                 _employeeDbContext.EmployeeTable.Remove(employee);
                 _employeeDbContext.SaveChanges();
-                TempData["SuccessMessage"] = "Deleted Successfully.";
+                TempData["SuccessMessage"] = "Deleted Successfully.";   
                 return RedirectToAction("Employees");
             }
             TempData["ErrorMessage"] = "Not Deleted Successfully.";

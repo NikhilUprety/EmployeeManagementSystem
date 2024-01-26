@@ -7,23 +7,22 @@ namespace EmployeeManagementSystem.Repository.Implementation
 {
     public class EmployeeRepository : Repository<EmployeeModel>, IEmployeeRepository
     {
-        private  EmployeeDbContext _employeeDbContext;
-        public EmployeeRepository(EmployeeDbContext employeeDbContext) : base(employeeDbContext)
+        private EmployeeDbContext _Db;
+        public EmployeeRepository(EmployeeDbContext db) : base(db)
         {
-            _employeeDbContext = employeeDbContext;
+
+            _Db = db;
+
         }
-
-
         public void save()
         {
-            _employeeDbContext.SaveChanges();
+            _Db.SaveChanges();
         }
 
         public void update(EmployeeModel obj)
         {
-            _employeeDbContext.EmployeeTable.Update(obj);
+            _Db.Update(obj);
         }
-        //djsjkfhcldh
-        
     }
+
 }
