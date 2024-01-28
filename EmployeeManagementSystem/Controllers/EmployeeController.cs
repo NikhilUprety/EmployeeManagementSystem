@@ -7,6 +7,7 @@ using EmployeeManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeManagementSystem.Controllers
@@ -55,27 +56,42 @@ namespace EmployeeManagementSystem.Controllers
         [HttpPost]
         public IActionResult Addemployee(EmployeeViewModel employeeVm)
         {
-            if (_employeerepo.Get(x => x.Email == employeeVm.Email || x.PhoneNumber == employeeVm.PhoneNumber)!=null)
+            try
             {
-                TempData["ErrorMessage"] = "Email or Phone Already Exists.";
-                return RedirectToAction("Addemployee");
-            }
-            else
-            {
-                var employees = new EmployeeModel()
+                string filename = "default.png";
+                if (employeeVm.photo != null)
                 {
-                    Name = employeeVm.Name,
-                    Email = employeeVm.Email,
-                    PhoneNumber = employeeVm.PhoneNumber,
-                    Address = employeeVm.Address,
-                    Position = employeeVm.Position
-                };
-                _employeerepo.Add(employees);
-                _employeerepo.save();
-                TempData["SuccessMessage"] = "Data Entered Successfully.";
+                    filename = _employeerepo.SaveFileAndReturnName("~/image/maledefault", employeeVm.photo);
+                }
+
+                if (_employeerepo.Get(x => x.Email == employeeVm.Email || x.PhoneNumber == employeeVm.PhoneNumber) != null)
+                {
+                    TempData["ErrorMessage"] = "Email or Phone Already Exists.";
+                    return RedirectToAction("Addemployee");
+                }
+                else
+                {
+                    var employees = new EmployeeModel()
+                    {
+                        Name = employeeVm.Name,
+                        Email = employeeVm.Email,
+                        PhoneNumber = employeeVm.PhoneNumber,
+                        Address = employeeVm.Address,
+                        Position = employeeVm.Position
+                    };
+                    _employeerepo.Add(employees);
+                    _employeerepo.save();
+                    TempData["SuccessMessage"] = "Data Entered Successfully.";
+                    return RedirectToAction("Employees");
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                SetMessage($"Opps !! Cannot Add Data. {e.Message}", "ErrorMessage");
                 return RedirectToAction("Employees");
             }
-
         }
         public IActionResult Update(int id)
         {
@@ -132,6 +148,32 @@ namespace EmployeeManagementSystem.Controllers
             }
             TempData["ErrorMessage"] = "Not Deleted Successfully.";
             return RedirectToAction("Employees");
+        }
+
+
+        public IActionResult ViewEmployee(int id)
+        {
+            var employee = _employeerepo.Get(x=>x.Id == id);
+            if (employee != null)
+            {
+                var employeeVm = new EmployeeViewModel()
+                {
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    Address = employee.Address,
+                    Position = employee.Position,
+
+                };
+                return View(employeeVm);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public void SetMessage(string message, string messageType)
+        {
+            TempData[messageType] = message;
         }
 
     }
