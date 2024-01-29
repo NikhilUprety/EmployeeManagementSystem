@@ -52,6 +52,12 @@ namespace EmployeeManagementSystem.Controllers
             return View();
         }
 
+        public IActionResult GetEmployee()
+        {
+            var data = _employeerepo.GetAll().ToList();
+            return Json(data);
+        }
+
 
         [HttpPost]
         public IActionResult Addemployee(EmployeeViewModel employeeVm)
