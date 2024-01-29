@@ -26,8 +26,8 @@ namespace EmployeeManagementSystem.Repository.Implementation
             dbset.Remove(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
-        {
+            public T Get(Expression<Func<T, bool>> filter)
+            {
             IQueryable<T> query = dbset;
            query = query.Where(filter);
             return query.FirstOrDefault();
@@ -43,6 +43,16 @@ namespace EmployeeManagementSystem.Repository.Implementation
         public void RemoveRange(IEnumerable<T> entity)
         {
         dbset.RemoveRange(entity);
+        }
+        public IEnumerable<T> GetAllData(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = dbset;
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return query.ToList();
         }
     }
 }

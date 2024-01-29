@@ -1,0 +1,27 @@
+ @foreach( var data in Model)
+                        {
+                            
+                        <tr>
+                            <th scope="row">@counter</th>
+                            <td>@data.Name</td>
+                            <td>@data.Email</td>
+                            <td>@data.PhoneNumber</td>
+                            <td>@data.Address</td>
+                            <td>@data.Position</td>
+                            <td>Department</td>
+                            
+                            <td class="d-flex flex-row align-items-center justify-content-between">
+                                <a href="#" onclick="submitDelete(@data.Id);" class="bg-danger p-1 text-light rounded ">
+                                    
+                                        <ion-icon name="trash-outline"></ion-icon>
+                                </a>
+                                <a href="/Employee/Update/@data.Id" class="bg-success p-1 text-light rounded">
+                                        <ion-icon name="create-outline"></ion-icon>
+                                </a>
+                                    <a href="/Employee/ViewEmployee/@data.Id" class="bg-primary p-1 text-light rounded">
+                                        <ion-icon name="person-circle-outline"></ion-icon>
+                                </a>
+                            </td>
+                        </tr>
+                        counter++;
+                        }
