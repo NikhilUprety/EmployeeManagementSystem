@@ -1,10 +1,9 @@
 ﻿@model List<EmployeeManagementSystem.Models.Domain.EmployeeModel>
-@{
-    int counter = 1;
-}
+
 <partial name="~/Views/Shared/_Notification.cshtml" />
 <div class="container">
     <div class="row">
+
         <div class="d-flex flex-column">
 
             <div class="col-md-10 mb-3">
@@ -33,48 +32,21 @@
             @if(Model != null)
             {
                 
-            <table class="table">
+            <table class="table" id="dataTable">
                 <thead>
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone no</th> 
                         <th scope="col">Adress</th> 
                         <th scope="col">Position</th>
                         <th scope="col">Department</th>
-                        <th scope="col">Action</th>
+                        @* <th scope="col">Action</th> *@
                        
                     </tr>   
                 </thead>
                 <tbody>
-                        @foreach( var data in Model)
-                        {
-                            
-                        <tr>
-                            <th scope="row">@counter</th>
-                            <td>@data.Name</td>
-                            <td>@data.Email</td>
-                            <td>@data.PhoneNumber</td>
-                            <td>@data.Address</td>
-                            <td>@data.Position</td>
-                            <td>Department</td>
-                            
-                            <td class="d-flex flex-row align-items-center justify-content-between">
-                                <a href="#" onclick="submitDelete(@data.Id);" class="bg-danger p-1 text-light rounded ">
-                                    
-                                        <ion-icon name="trash-outline"></ion-icon>
-                                </a>
-                                <a href="/Employee/Update/@data.Id" class="bg-success p-1 text-light rounded">
-                                        <ion-icon name="create-outline"></ion-icon>
-                                </a>
-                                    <a href="#x" class="bg-primary p-1 text-light rounded">
-                                        <ion-icon name="person-circle-outline"></ion-icon>
-                                </a>
-                            </td>
-                        </tr>
-                        counter++;
-                        }
+                       
                    
                 </tbody>
                 </table>
@@ -86,12 +58,49 @@
                 </div>
             }
             </div>
-           
-       
+     
     </div>
 </div>
 
- <script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/dataTables.js"></script>
+<link rel="stylesheet" href="~/css/dataTable.css" />
+ <script type="text/javascript">
+     $(function() {
+         const table = $('#dataTable').DataTable({
+             ajax: {
+                 "url":"/Employee/GetEmployee/",
+                 "type":"GET",
+                 "dataType": "json",
+                 "dataSrc": '',
+             },
+             "column":[
+                 {
+                     "data":"name"
+                 },
+                 {
+                     "data":"email"
+                 },
+                 {
+                     "data":"address"
+                 },
+                 {
+                     "data":"phone"
+                 }, {
+                     "data":"address"
+                 },
+                 {
+                     "data":"position"
+                 },
+                 {
+                     "data":"department"
+                 }
+             ]
+
+         })
+     });
+
      function submitDelete(id) {
          var confirmDelete = confirm("Are you sure?")
          if (confirmDelete) {
