@@ -24,6 +24,7 @@ namespace EmployeeManagementSystem.Controllers
         {
             return View();
         }
+       
 
         public IActionResult Employees(string searchQuery="")
         {
@@ -64,7 +65,7 @@ namespace EmployeeManagementSystem.Controllers
         {
             try
             {
-                string filename = "default.png";
+                string filename = "maledefault.png";
                 if (employeeVm.photo != null)
                 {
                     filename = _employeerepo.SaveFileAndReturnName("~/image/maledefault", employeeVm.photo);

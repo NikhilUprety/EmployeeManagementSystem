@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace EmployeeManagementSystem.Areas.admin.Controllers
+namespace EmployeeManagementSystem.Areas.Admin.Controllers
 {
-    [Authorize]
-
     public class AdminController : Controller
     {
+        [Area("Admin")]
         public IActionResult Index()
         {
             return View();
         }
-        
     }
 }

@@ -1,13 +1,25 @@
 using EmployeeManagementSystem.DataContext;
 using EmployeeManagementSystem.Repository.Implementation;
 using EmployeeManagementSystem.Repository.IRepository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddTransient(typeof(IRepository<>),typeof(Repository<>));
 builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options=>
+    {
+    options.LoginPath = "/Home/Login/";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60*24);
+    options.AccessDeniedPath = "/Forbidden/";
+    options.LogoutPath = "/";
+});
+    
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
@@ -30,10 +42,20 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "Areas",
+      pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}"
+    );
+
 
 app.MapControllerRoute(
     name: "default",
    pattern: "{controller=Employee}/{action=Index}/{id?}");
+});
 
 app.Run();

@@ -1,4 +1,7 @@
 ﻿@model List<EmployeeManagementSystem.Models.Domain.EmployeeModel>
+@{
+    int counter = 1;
+}
 
 <partial name="~/Views/Shared/_Notification.cshtml" />
 <div class="container">
@@ -15,8 +18,7 @@
                 </a>
             </div>
             </div>
-            <div class="col-md-2">
-                
+            <div class="col-md-2">         
             <div class="input-group mb-3">
                 <form class="d-flex flex-row" method="get" id="searchform">
 
@@ -35,19 +37,19 @@
             <table class="table" id="dataTable">
                 <thead>
                     <tr>
+                         <th scope="col">NO</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Phone no</th> 
                         <th scope="col">Adress</th> 
                         <th scope="col">Position</th>
                         <th scope="col">Department</th>
-                        @* <th scope="col">Action</th> *@
+                        <th scope="col">Action</th> 
                        
                     </tr>   
                 </thead>
                 <tbody>
-                       
-                   
+                        
                 </tbody>
                 </table>
             }
@@ -61,45 +63,36 @@
      
     </div>
 </div>
+<script src="~/js/dataTableFile.js"></script>
+<link href="~/css/datatable.css" rel="stylesheet" />
+@section Scripts{
 
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/dataTables.js"></script>
-<link rel="stylesheet" href="~/css/dataTable.css" />
  <script type="text/javascript">
-     $(function() {
-         const table = $('#dataTable').DataTable({
-             ajax: {
-                 "url":"/Employee/GetEmployee/",
-                 "type":"GET",
-                 "dataType": "json",
-                 "dataSrc": '',
-             },
-             "column":[
-                 {
-                     "data":"name"
-                 },
-                 {
-                     "data":"email"
-                 },
-                 {
-                     "data":"address"
-                 },
-                 {
-                     "data":"phone"
-                 }, {
-                     "data":"address"
-                 },
-                 {
-                     "data":"position"
-                 },
-                 {
-                     "data":"department"
-                 }
-             ]
+    $(function(){
+        // alert("Hello")
+        $('#dataTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]],
+                responsive: true,
+                ajax: {
+                    "url": "/Employee/GetEmployee",
+                    "type": "GET",
+                    "dataType": "json",
+                    dataSrc: '',
+                },
+                "columns": [
 
-         })
-     });
+
+                    { "data": "name" },
+                    { "data": "address" },
+                    { "data": "salary" },
+                    { "data": "phone", orderable: false },
+                    { "data": "position" },
+                    { "data": "email" },
+                    { "data": "department.name" },
+                ]
+        
+        })
 
      function submitDelete(id) {
          var confirmDelete = confirm("Are you sure?")
@@ -118,3 +111,4 @@
          }
      }
 </script>
+}
