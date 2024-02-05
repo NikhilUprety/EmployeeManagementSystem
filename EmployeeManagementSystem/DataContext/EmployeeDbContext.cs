@@ -8,6 +8,7 @@ namespace EmployeeManagementSystem.DataContext
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : base(options)
         {
             
+                    
         }
 
         public DbSet<EmployeeModel>? EmployeeTable { get;set; } 
