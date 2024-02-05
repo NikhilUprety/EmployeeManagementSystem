@@ -26,6 +26,7 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
     options.UseNpgsql(connectionString));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//builder.Services.Add(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
 
 var app = builder.Build();
 
