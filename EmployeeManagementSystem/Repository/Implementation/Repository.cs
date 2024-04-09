@@ -9,7 +9,7 @@ namespace EmployeeManagementSystem.Repository.Implementation
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly EmployeeDbContext _employeeDbContext;
-        internal DbSet<T> dbset;
+        private DbSet<T> dbset;
         public Repository(EmployeeDbContext employeeDbContext)
         {
             _employeeDbContext = employeeDbContext;
@@ -17,7 +17,7 @@ namespace EmployeeManagementSystem.Repository.Implementation
             //_employeeDbContext==dbset
         }
         public void Add(T entity)
-        { 
+        {
             dbset.Add(entity);
         }
 
@@ -26,23 +26,22 @@ namespace EmployeeManagementSystem.Repository.Implementation
             dbset.Remove(entity);
         }
 
-            public T Get(Expression<Func<T, bool>> filter)
-            {
+        public T Get(Expression<Func<T, bool>> filter)
+        {
             IQueryable<T> query = dbset;
-           query = query.Where(filter);
+            query = query.Where(filter);
             return query.FirstOrDefault();
         }
 
         public IEnumerable<T> GetAll()
         {
 
-            IQueryable<T> query = dbset;
-            return query.ToList();
+            return dbset.AsEnumerable();
         }
 
         public void RemoveRange(IEnumerable<T> entity)
         {
-        dbset.RemoveRange(entity);
+           dbset.RemoveRange(entity);
         }
         public IEnumerable<T> GetAllData(params Expression<Func<T, object>>[] includes)
         {
